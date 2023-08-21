@@ -1,0 +1,40 @@
+<?php
+
+namespace DummyNamespace;
+
+use Illuminate\Database\Eloquent\Model;
+{{useSoftDeletes}}
+class DummyClass extends Model
+{
+    {{softDeletes}}/**
+     * The database table used by the model.
+     *
+     * @var string
+     */
+    protected $table = '{{table}}';
+
+    {{primaryKey}}
+
+    /**
+     * Attributes that should be mass-assignable.
+     *
+     * @var array
+     */
+    protected $fillable = {{fillable}};
+
+    {{relationships}}
+    
+    
+     public static function boot() {
+        parent::boot();
+        self::created(function($model) {});    
+        self::updated(function($model){});
+        self::updating(function($model){});
+        self::deleted(function($model){});
+        self::deleting(function($model){});
+        self::saving(function($model){});
+        self::saved(function($model){});
+        }
+   
+
+}
