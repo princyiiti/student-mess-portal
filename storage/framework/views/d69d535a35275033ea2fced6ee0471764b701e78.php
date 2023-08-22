@@ -40,7 +40,7 @@
                                                             align="center" valign="top" class="subTitle">
                                                             <h4 class="text"
                                                                 style="color:#999;font-family:Poppins,Helvetica,Arial,sans-serif;font-size:16px;font-weight:500;font-style:normal;letter-spacing:normal;line-height:24px;text-transform:none;text-align:center;padding:0;margin:0">
-                                                                Your Rebate Request Has Been <?php if($Rebate->status == 1): ?> Approved! <?php else: ?> Reject <?php endif; ?></h4>
+                                                                Your Rebate Request Has Been <?php if($Rebate->status == 1): ?> Approved! <?php else: ?> Rejected <?php endif; ?></h4>
                                                         </td>
                                                     </tr>
                                                     <tr>

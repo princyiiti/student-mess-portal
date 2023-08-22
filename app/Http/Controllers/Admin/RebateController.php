@@ -173,13 +173,13 @@ class RebateController extends Controller
              if($request->post('type_rebate') == 'Short Term Rebate' && $totalday > 7){
  
                 return redirect('admin/rebate/create')->with('flash_message', 
-                 'rebate can be applied for a minimum of 2-7 consecutive days');
+                 'rebate can be applied for 2 to 7 consecutive days only');
              }
 
-             if($request->post('type_rebate') == 'Long Term Rebate' && $totalday < 7){
+             if($request->post('type_rebate') == 'Long Term Rebate' && $totalday <= 7){
  
                 return redirect('admin/rebate/create')->with('flash_message', 
-                'rebate can be applied for a maximum 7 days consecutive days');
+                'Duration of rebate must be greater than or equal to 8 Days for Long term Rebate');
             }
  
              if($form_month != $to_month){
@@ -475,26 +475,46 @@ class RebateController extends Controller
         ,   'Pragma'              => 'public'
         ];
 
-        $list = Rebate::all()->toArray();
+        $list = Rebate::get();
        
-        // $data =array();
+        $data =array();
 
-        // foreach ($list as $key => $value) {
+        foreach ($list as $key => $value) {
 
-        //     $data[] = ['mess name' =>$value->mess_name];
+            if($value->status == 1){
+                $status = 'Approved';
+            }elseif($value->status == 2){
+                $status = 'Pending';
+            }else{
+                $status = 'Rejected';
+            }
+
+            $user = User::find($value->created_by);
+
+
+            $data[] = [
+                'Student Name'=>$user->name,
+                'Email'=>$user->email,
+                'Mess name' =>$value->mess_name,
+                'Rebate Type'=>$value->type_rebate,
+                'Form Date'=>$value->from_date,
+                'TO Date' =>$value->to_date,
+                'Total rebate day' =>$value->total_rebate_day,
+                'Status' =>$status,
+            ];
             
-        // }
+        }
 
-        // dd($data);
 
-        if($list){
+
+        if($data){
             # add headers for each column in the CSV download
-            array_unshift($list, array_keys($list[0]));
+            array_unshift($data, array_keys($data[0]));
 
-            $callback = function() use ($list) 
+            $callback = function() use ($data) 
             {
                 $FH = fopen('php://output', 'w');
-                foreach ($list as $row) { 
+                foreach ($data as $row) { 
                     fputcsv($FH, $row);
                 }
                 fclose($FH);

@@ -32,7 +32,7 @@
 
 
                 <!-- <div class="card-header"> </div> -->
-                <div class="card-body">
+                <div class="card-body" id="autorefresh">
                     <?php if(auth()->user()->role_id == 3 ): ?>
                     <a href="<?php echo e(url('/admin/rebate/create')); ?>" class="btn btn-success btn-sm" title="Add New Category">
                         <i class="fa fa-plus" aria-hidden="true"></i> Add New
@@ -52,7 +52,7 @@
 
                     <br />
                     <br />
-                    <div class="table-responsive" id="autorefresh">
+                    <div class="table-responsive">
                         <table class="table" id="datatable">
                             <thead>
                                 <tr>
@@ -69,9 +69,9 @@
                                     <?php endif; ?>
                                 </tr>
                             </thead>
-                            <tbody>
+                            <tbody >
                                 <?php $__currentLoopData = $Rebate; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $item): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-                                <tr>
+                                <tr id="tdid">
                                     <td><?php if($item->mess_subcription_id): ?><input type="checkbox" id="" name="rebates" value="<?php echo e($item->id); ?>"><?php endif; ?></td>
                                     <td><?php echo e($item->userdata->name); ?> (<?php echo e($item->userdata->email); ?>)</td>
                                     <td><?php echo e(date('d-M-Y', strtotime( $item->from_date))); ?></td>
@@ -94,7 +94,7 @@
                                         <?php elseif($item->status==2): ?>
                                         <span style="color: #007bff;">Pending</span>
                                         <?php elseif($item->status==0): ?>
-                                        <span style="color: red;">Reject</span>
+                                        <span style="color: red;">Rejected</span>
                                         <?php endif; ?>
                                     </td>
 
@@ -105,21 +105,21 @@
 
                                         <a href="<?php echo e(url('/admin/rebate/active/' . $item->id.'/2')); ?>"
                                             title="View rebate"><button
-                                                class="btn btn-warning btn-sm">Pending</button></a>
+                                                class="btn btn-warning btn-sm">Unapprove</button></a>
                                         <a href="<?php echo e(url('/admin/rebate/active/' . $item->id.'/0')); ?>"
                                             title="View rebate"><button
                                                 class="btn btn-danger btn-sm">Reject</button></a>
                                         <?php elseif($item->status==0): ?>
                                         <a href="<?php echo e(url('/admin/rebate/active/' . $item->id.'/1')); ?>"
                                             title="View rebate"><button
-                                                class="btn btn-success btn-sm">Approved</button></a>
+                                                class="btn btn-success btn-sm">Approve</button></a>
                                         <a href="<?php echo e(url('/admin/rebate/active/' . $item->id.'/2')); ?>"
                                             title="View rebate"><button
-                                                class="btn btn-warning btn-sm">Pending</button></a>
+                                                class="btn btn-warning btn-sm">Accept</button></a>
                                         <?php elseif($item->status==2): ?>
                                         <a href="<?php echo e(url('/admin/rebate/active/' . $item->id.'/1')); ?>"
                                             title="View rebate"><button
-                                                class="btn btn-success btn-sm">Approved</button></a>
+                                                class="btn btn-success btn-sm">Approve</button></a>
                                         <a href="<?php echo e(url('/admin/rebate/active/' . $item->id.'/0')); ?>"
                                             title="View rebate"><button
                                                 class="btn btn-danger btn-sm">Reject</button></a>
@@ -182,6 +182,7 @@ function checkall(status) {
     });
 
     if (rebateids.length > 0) {
+        let url = "<?php echo e(url('/')); ?>";
         $.ajax({
             url: "<?php echo e(url('admin/rebate_approved/')); ?>",
             type: "POST",
@@ -194,11 +195,10 @@ function checkall(status) {
             success: function(data) {
                 if (data.count == 1) {
                     printsuccessMsg(data.html);
-                    // setInterval(function () {
-                    //   $('#autorefresh').load();
-                    // }, 5000); //5 seconds
+                    
+                    $('#autorefresh').load("#autorefresh"); 
 
-                    setInterval(refreshPage(), 7000); 
+                    setInterval(refreshPage(), 1000); 
                 } else {
                     printErrorMsg(data.html);
                 }
@@ -214,6 +214,7 @@ function checkall(status) {
 }
 function refreshPage() {
     location.reload("#autorefresh");
+  
 }
 function printsuccessMsg(msg) {
     $(".print-success-msg").find("ul").html('');
