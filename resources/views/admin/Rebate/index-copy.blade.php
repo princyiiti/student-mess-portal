@@ -22,8 +22,6 @@
 
     <!-- Main content -->
     <section class="content">
-    
-
         <div class="container-fluid">
             <div class="card card-primary">
 
@@ -37,7 +35,6 @@
 
                 <!-- <div class="card-header"> </div> -->
                 <div class="card-body" id="autorefresh">
-                    
                     @if(auth()->user()->role_id == 3 )
                     <a href="{{ url('/admin/rebate/create') }}" class="btn btn-success btn-sm" title="Add New Category">
                         <i class="fa fa-plus" aria-hidden="true"></i> Add New
@@ -69,7 +66,6 @@
                     <br />
                     <br />
                     <div class="table-responsive">
-                    
                         <table class="table" id="datatable">
                             <thead>
                                 <tr>
@@ -120,24 +116,24 @@
                                         @if($item->mess_subcription_id)
                                         @if($item->status==1)
 
-                                        <a onclick="rebatestatuschange({{$item->id}},2)" 
+                                        <a href="{{ url('/admin/rebate/active/' . $item->id.'/2') }}"
                                             title="View rebate"><button
                                                 class="btn btn-warning btn-sm">Unapprove</button></a>
-                                        <a onclick="rebatestatuschange({{$item->id}},0)" 
+                                        <a href="{{ url('/admin/rebate/active/' . $item->id.'/0') }}"
                                             title="View rebate"><button
                                                 class="btn btn-danger btn-sm">Reject</button></a>
                                         @elseif($item->status==0)
-                                        <a onclick="rebatestatuschange({{$item->id}},1)"
+                                        <a href="{{ url('/admin/rebate/active/' . $item->id.'/1') }}"
                                             title="View rebate"><button
                                                 class="btn btn-success btn-sm">Approve</button></a>
-                                        <a onclick="rebatestatuschange({{$item->id}},2)"
+                                        <a href="{{ url('/admin/rebate/active/' . $item->id.'/2') }}"
                                             title="View rebate"><button
                                                 class="btn btn-warning btn-sm">Accept</button></a>
                                         @elseif($item->status==2)
-                                        <a onclick="rebatestatuschange({{$item->id}},1)" 
+                                        <a href="{{ url('/admin/rebate/active/' . $item->id.'/1') }}"
                                             title="View rebate"><button
                                                 class="btn btn-success btn-sm">Approve</button></a>
-                                        <a onclick="rebatestatuschange({{$item->id}},0)"
+                                        <a href="{{ url('/admin/rebate/active/' . $item->id.'/0') }}"
                                             title="View rebate"><button
                                                 class="btn btn-danger btn-sm">Reject</button></a>
                                         @endif
@@ -180,40 +176,14 @@
 </div>
 
 <script type="text/javascript">
-function rebatestatuschange(id,status) {
-
-    console.log(id,status);
-    $.ajax({
-        url: "{{ url('admin/rebate/active')}} ",
-        type: "POST",
-        data: {
-            "_token": "{{ csrf_token() }}",
-            'status': status,
-            'id': id,
-        },
-        dataType: "json",
-        beforeSend : function(){
-            $('#loading-image').show();
-        },
-        success: function(data) {
-            $('#loading-image').show();
-            if (data.count == 1) {
-                printsuccessMsg(data.html);
-                    
-                $('#autorefresh').load("#autorefresh"); 
-                setInterval(refreshPage(), 1000); 
-            } else {
-                printErrorMsg(data.html);
-            }
-        }
-
-    })
-   
+function changestatusactive(e) {
+    alert("active");
+    //document.getElementById("demo").style.color = "red";
 }
 
 function changestatusinactive(e) {
     alert("INactive");
-   
+    //document.getElementById("demo").style.color = "red";
 }
 
 function checkall(status) {

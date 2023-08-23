@@ -15,6 +15,7 @@ use Carbon\Carbon;
 use DateTime;
 use Mail;
 use App\Mail\MailUser;
+use App\Mail\CatererMail;
 class RebateController extends Controller
 {
     /**
@@ -344,23 +345,42 @@ class RebateController extends Controller
 
         return redirect('admin/rebate')->with('flash_message', 'Rebate updated!');
     }
-    public function active($id,$state)
+    public function active(Request $request)
     {
-        $Rebate = Rebate::findOrFail($id);
+
+        $Rebate = Rebate::findOrFail($request->id);
 
         $data = User::find($Rebate->created_by);
 
         $messdata = messlist::where('title',$Rebate->mess_name)->first();
+
+        //dd($Rebate,$data,$messdata);
+
         
-        $Rebate->status=$state;
+        $Rebate->status=$request->status;
         $Rebate->save();
         $to = 'princy@iiti.ac.in';
-        if($state == 1){
+        $Catereremail = $messdata->email;
+        
+        if($request->status == 1){
+            Mail::to($to)->send(new MailUser($data,$messdata,$Rebate));
+            Mail::to($Catereremail)->send(new CatererMail($data,$messdata,$Rebate));
+        }
+        if($request->status == 0){
             Mail::to($to)->send(new MailUser($data,$messdata,$Rebate));
         }
-        if($state == 0){
-            Mail::to($to)->send(new MailUser($data,$messdata,$Rebate));
+        if($Rebate){
+            $msg = "Rebate status changed sucessfully ";
+
+            $response = array('count' => 1,'status'=> true,'html' =>$msg );
+        }else{
+            $msg = "invalid data select";
+            $response = array('count' => 0,'status'=> true,'html' =>$msg );
         }
+
+
+
+        return response()->json($response);
         return redirect('admin/rebate')->with('flash_message', 'Rebate updated!');
     }
     /**

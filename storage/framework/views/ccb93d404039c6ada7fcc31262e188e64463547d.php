@@ -20,6 +20,8 @@
 
     <!-- Main content -->
     <section class="content">
+    
+
         <div class="container-fluid">
             <div class="card card-primary">
 
@@ -33,6 +35,7 @@
 
                 <!-- <div class="card-header"> </div> -->
                 <div class="card-body" id="autorefresh">
+                    
                     <?php if(auth()->user()->role_id == 3 ): ?>
                     <a href="<?php echo e(url('/admin/rebate/create')); ?>" class="btn btn-success btn-sm" title="Add New Category">
                         <i class="fa fa-plus" aria-hidden="true"></i> Add New
@@ -53,6 +56,7 @@
                     <br />
                     <br />
                     <div class="table-responsive">
+                    
                         <table class="table" id="datatable">
                             <thead>
                                 <tr>
@@ -103,24 +107,24 @@
                                         <?php if($item->mess_subcription_id): ?>
                                         <?php if($item->status==1): ?>
 
-                                        <a href="<?php echo e(url('/admin/rebate/active/' . $item->id.'/2')); ?>"
+                                        <a onclick="rebatestatuschange(<?php echo e($item->id); ?>,2)" 
                                             title="View rebate"><button
                                                 class="btn btn-warning btn-sm">Unapprove</button></a>
-                                        <a href="<?php echo e(url('/admin/rebate/active/' . $item->id.'/0')); ?>"
+                                        <a onclick="rebatestatuschange(<?php echo e($item->id); ?>,0)" 
                                             title="View rebate"><button
                                                 class="btn btn-danger btn-sm">Reject</button></a>
                                         <?php elseif($item->status==0): ?>
-                                        <a href="<?php echo e(url('/admin/rebate/active/' . $item->id.'/1')); ?>"
+                                        <a onclick="rebatestatuschange(<?php echo e($item->id); ?>,1)"
                                             title="View rebate"><button
                                                 class="btn btn-success btn-sm">Approve</button></a>
-                                        <a href="<?php echo e(url('/admin/rebate/active/' . $item->id.'/2')); ?>"
+                                        <a onclick="rebatestatuschange(<?php echo e($item->id); ?>,2)"
                                             title="View rebate"><button
                                                 class="btn btn-warning btn-sm">Accept</button></a>
                                         <?php elseif($item->status==2): ?>
-                                        <a href="<?php echo e(url('/admin/rebate/active/' . $item->id.'/1')); ?>"
+                                        <a onclick="rebatestatuschange(<?php echo e($item->id); ?>,1)" 
                                             title="View rebate"><button
                                                 class="btn btn-success btn-sm">Approve</button></a>
-                                        <a href="<?php echo e(url('/admin/rebate/active/' . $item->id.'/0')); ?>"
+                                        <a onclick="rebatestatuschange(<?php echo e($item->id); ?>,0)"
                                             title="View rebate"><button
                                                 class="btn btn-danger btn-sm">Reject</button></a>
                                         <?php endif; ?>
@@ -165,14 +169,40 @@
 </div>
 
 <script type="text/javascript">
-function changestatusactive(e) {
-    alert("active");
-    //document.getElementById("demo").style.color = "red";
+function rebatestatuschange(id,status) {
+
+    console.log(id,status);
+    $.ajax({
+        url: "<?php echo e(url('admin/rebate/active')); ?> ",
+        type: "POST",
+        data: {
+            "_token": "<?php echo e(csrf_token()); ?>",
+            'status': status,
+            'id': id,
+        },
+        dataType: "json",
+        beforeSend : function(){
+            $('#loading-image').show();
+        },
+        success: function(data) {
+            $('#loading-image').show();
+            if (data.count == 1) {
+                printsuccessMsg(data.html);
+                    
+                $('#autorefresh').load("#autorefresh"); 
+                setInterval(refreshPage(), 1000); 
+            } else {
+                printErrorMsg(data.html);
+            }
+        }
+
+    })
+   
 }
 
 function changestatusinactive(e) {
     alert("INactive");
-    //document.getElementById("demo").style.color = "red";
+   
 }
 
 function checkall(status) {

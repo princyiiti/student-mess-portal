@@ -98,7 +98,7 @@
                                                                             valign="top" class="description">
                                                                             <p class="text"
                                                                                 style="color:#666;font-family:'Open Sans',Helvetica,Arial,sans-serif;font-size:14px;font-weight:400;font-style:normal;letter-spacing:normal;line-height:22px;text-transform:none;text-align:center;padding:0;margin:0">
-                                                                                If you have any questions or need further assistance, please  contact to the Student Affairs.</p>
+                                                                                If you have any questions or need further assistance, please  contact to the dining office IIT Indore.</p>
                                                                         </td>
                                                                     </tr>
                                                                 </tbody>

@@ -402,8 +402,9 @@ class RebateController extends Controller
 
         return redirect('admin/rebate')->with('flash_message', 'Rebate updated!');
     }
-public function active($id,$state)
+public function active(Request $request)
 {
+    
     $Rebate = Rebate::findOrFail($id);
     $Rebate->status=$state;
     $Rebate->save();

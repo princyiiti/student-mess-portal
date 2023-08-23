@@ -101,7 +101,7 @@ Route::resource('admin/rebate', 'Admin\\RebateController');
       Route::resource('admin/users', 'Admin\\UsersController');
       Route::resource('admin/studenttotalfee', 'Admin\\StudentTotalFeeController');
       Route::POST('admin/studenttotalfee/{id}', 'Admin\\StudentTotalFeeController@update');
-      Route::get('admin/rebate/active/{id}/{state}', 'Admin\\RebateController@active');
+      Route::post('admin/rebate/active', 'Admin\\RebateController@active');
       Route::get('admin/rebetreportlist','Admin\\RebateController@demolist')->name('admin.rebetreportlist');
       Route::get('AllFeeExcel','Admin\\FeeStudentController@Allfeeexport')->name('AllFeeExcel');
       Route::get('admin/mess_data/delete/{id}','Admin\\Student_mess_dataController@destroy');
@@ -185,7 +185,7 @@ Route::resource('admin/rebate', 'Admin\\RebateController');
       Route::get('admin/user/importcsv', 'Admin\\UsersController@importcsv')->name('admin/user/importcsv');
       // Route::resource('admin/studenttotalfee', 'Admin\\StudentTotalFeeController');
       // Route::POST('admin/studenttotalfee/{id}', 'Admin\\StudentTotalFeeController@update');
-      Route::get('admin/rebate/active/{id}/{state}', 'Admin\\RebateController@active');
+      Route::post('admin/rebate/active', 'Admin\\RebateController@active');
       Route::get('custom_demo_list','Admin\\RebateController@demolist')->name('custom_demo_list');
   
       Route::resource('admin/feestudent', 'Admin\\FeeStudentController');

@@ -73,7 +73,9 @@
 </head>
 
 <body class="hold-transition sidebar-mini">
+
     <div class="wrapper" id="app">
+    
         <!-- Header -->
         <?php echo $__env->make('layouts.header', \Illuminate\Support\Arr::except(get_defined_vars(), array('__data', '__path')))->render(); ?>
         <!-- Sidebar -->
