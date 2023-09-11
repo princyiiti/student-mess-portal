@@ -109,6 +109,7 @@
                             <tr>
                                 <th>#</th>
                                 <th>Student Name</th>
+                                <th>Roll Number</th>
                                 <th>Program Name</th>
                                 <th>Hostel Name</th>
                                 <th>Mess Name</th>
@@ -140,6 +141,7 @@ $(document).ready(function() {
         processing: true,
         serverSide: true,
         scrollX: true,
+        order: [[10, 'desc']],
         dom: 'Bfrtip',
         buttons: [
             'csv', 'excel'
@@ -163,6 +165,10 @@ $(document).ready(function() {
             {
                 data: 'student_name',
                 name: 'student_name'
+            },
+            {
+                data:'student_rollno',
+                name:'student_rollno'
             },
             {
                 data:'program',

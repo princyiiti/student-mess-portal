@@ -49,8 +49,9 @@
                                     <tr>
                                         <td><?php echo e($loop->iteration); ?></td>
                                         <td><?php echo e($item->title); ?></td>
-                                        <td><?php echo e($item->email); ?></td>
+                                        
                                         <td><?php echo e($item->studentlimit); ?></td>
+                                        <td><?php echo e($item->email); ?></td>
                                         <td>
                                             <!-- <a href="<?php echo e(url('/admin/messlist/' . encrypt($item->id))); ?>" title="View Category"><button class="btn btn-info btn-sm"><i class="fa fa-eye" aria-hidden="true"></i> View</button></a> -->
                                             <a href="<?php echo e(url('/admin/messlist/' . $item->id . '/edit')); ?>" title="Edit Category"><button class="btn btn-primary btn-sm"><i class="fa fa-pencil-square-o" aria-hidden="true"></i> Edit</button></a>

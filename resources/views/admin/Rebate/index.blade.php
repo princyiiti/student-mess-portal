@@ -1,6 +1,48 @@
 @extends('layouts.app')
 
 @section('content')
+<style>
+    .display-none {
+    display: none !important;
+}
+
+.overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100vh;
+    background: rgba(0,0,0,.8);
+    z-index: 999;
+    opacity: 1;
+    transition: all 0.5s;
+}
+ 
+
+.lds-dual-ring {
+    display: inline-block;
+}
+
+.lds-dual-ring:after {
+    content: " ";
+    display: block;
+    width: 64px;
+    height: 64px;
+    margin: 5% auto;
+    border-radius: 50%;
+    border: 6px solid #2b70ba;
+    border-color: #2b70ba transparent #2b70ba transparent;
+    animation: lds-dual-ring 1.2s linear infinite;
+}
+@keyframes lds-dual-ring {
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
+}
+</style>
 <div class="content-wrapper" style="min-height: 543px;">
     <!-- Content Header (Page header) -->
 
@@ -167,8 +209,10 @@
                                 @endforeach
                             </tbody>
                         </table>
+                       
                          <div class="pagination-wrapper"> {!! $Rebate->appends(['search' => Request::get('search')])->render() !!} </div> 
                     </div>
+                    <div id="loader" class="lds-dual-ring display-none overlay">Please Wait</div>
 
                 </div>
 
@@ -192,8 +236,8 @@ function rebatestatuschange(id,status) {
             'id': id,
         },
         dataType: "json",
-        beforeSend : function(){
-            $('#loading-image').show();
+        beforeSend: function () {
+            $('#loader').removeClass('display-none')
         },
         success: function(data) {
             $('#loading-image').show();
@@ -205,7 +249,10 @@ function rebatestatuschange(id,status) {
             } else {
                 printErrorMsg(data.html);
             }
-        }
+        },
+        complete: function () {
+            $('#loader').addClass('display-none')
+        },
 
     })
    

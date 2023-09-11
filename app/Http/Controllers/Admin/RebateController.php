@@ -576,7 +576,7 @@ class RebateController extends Controller
             $addnewcount = $rebateapplieddata + $totalday;
 
             
-            if(($rebateapplieddata >=8) || ($addnewcount >= 8) ){
+            if(($rebateapplieddata >8) || ($addnewcount > 8) ){
                 //return redirect('admin/rebate/create')->with('flash_message', 'maximum limit for short term rebate in a month is 8 days');
                 return $addnewcount;
             }
